@@ -1,0 +1,117 @@
+- type: "'tags'"
+- type: "'ping'"
+- type: "'parameter-list'"
+  parameters:
+    - element: "'span.inform'"
+      label: "'Last inform'"
+      parameter: DATE_STRING(Events.Inform)
+      type: "'container'"
+      components:
+        - type: "'parameter'"
+        - chart: "'online'"
+          type: "'overview-dot'"
+        - type: "'summon-button'"
+          parameters:
+            - Device.DeviceInfo.X_MIKROTIK_SystemIdentity
+            - Device.DeviceInfo.X_MIKROTIK_ArchName
+            - Device.DeviceInfo.Description
+            - Device.DeviceInfo.ManufacturerOUI
+            - Device.DeviceInfo.HardwareVersion
+            - Device.DeviceInfo.ProductClass
+            - Device.DeviceInfo.ModelName
+            - Device.DeviceInfo.SerialNumber
+            - Device.Ethernet.Interface.1.MACAddress
+            - Device.DeviceInfo.SoftwareVersion
+            - Device.DeviceInfo.UpTime
+            - Device.DHCPv4.Client.1.IPAddress
+            - Device.IP.Interface.1.IPv4Address.1.IPAddress
+            - Device.WiFi.SSID.1.SSID
+            - Device.WiFi.SSID.2.SSID
+            - Device.WiFi.SSID.1.MACAddress
+            - Device.WiFi.SSID.2.MACAddress
+            - Device.WiFi.AccessPoint.1.AssociatedDeviceNumberOfEntries
+            - Device.WiFi.AccessPoint.2.AssociatedDeviceNumberOfEntries
+            - Device.WiFi.AccessPoint.1.AssociatedDevice
+            - Device.WiFi.AccessPoint.2.AssociatedDevice
+            - Device.Hosts.Host
+            - Device.Hosts.HostNumberOfEntries
+            - Device.ManagementServer
+    - label: "'Manufacturer'"
+      parameter: DeviceID.Manufacturer
+    - label: "'Hardware version'"
+      parameter: Device.DeviceInfo.HardwareVersion
+    - label: "'Product class'"
+      parameter: Device.DeviceInfo.ProductClass
+    - label: "'Model Name'"
+      parameter: Device.DeviceInfo.ModelName
+    - label: "'Serial number'"
+      parameter: DeviceID.SerialNumber
+    - label: "'Software version'"
+      parameter: Device.DeviceInfo.SoftwareVersion
+    - label: "'UP Time'"
+      parameter: Device.DeviceInfo.UpTime
+    - label: "'Identity'"
+      parameter: Device.DeviceInfo.X_MIKROTIK_SystemIdentity
+    - label: "'IP'"
+      parameter: Device.IP.Interface.1.IPv4Address.1.IPAddress
+- label: "'Radio'"
+  parameter: Device.WiFi.Radio
+  type: "'parameter-table'"
+  childParameters:
+    - label: "'Channel'"
+      parameter: Channel
+    - label: "'Band'"
+      parameter: OperatingFrequencyBand
+    - label: "'Status'"
+      parameter: Enable
+- label: "'List WiFi'"
+  parameter: Device.WiFi.SSID
+  type: "'parameter-table'"
+  childParameters:
+    - label: "'Radio'"
+      parameter: LowerLayers
+    - label: "'SSID'"
+      parameter: SSID
+    - label: "'Status'"
+      parameter: Status
+- label: "'Security'"
+  parameter: Device.WiFi.AccessPoint
+  type: "'parameter-table'"
+  childParameters:
+    - label: "'SSID ke'"
+      parameter: SSIDReference
+    - label: "'Modse'"
+      parameter: Security.ModeEnabled
+    - label: "'Password'"
+      parameter: Security.KeyPassphrase
+    - label: "'Status'"
+      parameter: Status
+- label: "'DHCPv4 hosts'"
+  parameter: Device.Hosts.Host
+  type: "'parameter-table'"
+  childParameters:
+    - label: "'IP address'"
+      parameter: IPAddress
+    - label: "'MAC address'"
+      parameter: PhysAddress
+    - label: "'Host name'"
+      parameter: HostName
+    - label: "'Interface'"
+      parameter: Layer1Interface
+- element: "'div'"
+  type: "'container'"
+  components:
+    - element: "'h3'"
+      type: "'container'"
+      components:
+        - "'Faults'"
+    - type: "'device-faults'"
+- element: "'div'"
+  type: "'container'"
+  components:
+    - element: "'h3'"
+      type: "'container'"
+      components:
+        - "'All parameters'"
+    - type: "'all-parameters'"
+- type: "'device-actions'"

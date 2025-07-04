@@ -1,0 +1,40 @@
+{
+  "name": "genieacs",
+  "version": "1.2.9+20220822165235",
+  "description": "A TR-069 Auto Configuration Server (ACS)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/genieacs/genieacs.git"
+  },
+  "homepage": "https://genieacs.com",
+  "keywords": [
+    "TR-069",
+    "CWMP",
+    "ACS"
+  ],
+  "author": "Zaid Abdulla <zaid@genieacs.com>",
+  "license": "AGPL-3.0",
+  "directories": {
+    "bin": "bin"
+  },
+  "dependencies": {
+    "@breejs/later": "^4.1.0",
+    "espresso-iisojs": "^1.0.4",
+    "iconv-lite": "^0.6.3",
+    "ipaddr.js": "^2.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-compress": "^5.1.0",
+    "koa-jwt": "^4.0.3",
+    "koa-router": "^12.0.0",
+    "koa-static": "^5.0.0",
+    "mongodb": "^4.9.0",
+    "parsimmon": "^1.18.1",
+    "seedrandom": "^3.0.5"
+  },
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "scripts": {}
+}
