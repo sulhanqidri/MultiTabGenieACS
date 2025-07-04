@@ -3,6 +3,10 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 local_ip=$(hostname -I | awk '{print $1}')
+echo -e "${GREEN}============================================================================${NC}"
+echo -e "${GREEN}==================== Script Install  MultoTab GenieACS. ====================${NC}"
+echo -e "${GREEN}===================== By LSTNetwork. Info 085322692888 =====================${NC}"
+echo -e "${GREEN}============================================================================${NC}"
 
 # Install git
 apt install git -y
