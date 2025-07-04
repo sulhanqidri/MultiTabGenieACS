@@ -1,20 +1,20 @@
-# Auto Moodle
-Pastikan sudah terinstall paket git dan curl terinstall. Jika belum ketikan perintah di bawah ini:
+# Keterangan
+Pastikan sudah terinstall paket git terinstall. Jika belum ketikan perintah di bawah ini:
 Install terlebih dahulu
 
 # Printah
 ```
-apt install git curl wget -y
-git clone https://github.com/sulhanqidri/AutoInstallGenieACS
+apt install git -y
+https://github.com/sulhanqidri/MultiTabGenieACS
 ```
 # Penjelasan
 Download file bash
 Ubah hak akses file menjadi execute
 
 ```
-cd AutoInstallGenieACS
-chmod +x AutoInstallGenieACS.sh
-./AutoInstallGenieACS.sh
+cd MultiTabGenieACS
+chmod +x install.sh
+./install.sh
 ```
 
 # Silahkan buka berdasarkan ip address
