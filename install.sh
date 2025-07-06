@@ -17,11 +17,25 @@ git clone https://github.com/sulhanqidri/MultiTabGenieACS
 # Masuk folder
 cd MultiTabGenieACS
 
-# Repelace folder GenieACS
-cp -ru genieacs /usr/lib/node_modules/
+echo -e "${GREEN}Multi tab full parameter? (y/n)${NC}"
+read installtabfull
+if [ "$installtabfull" != "y" ]; then
+    # Repelace folder GenieACS
+    cp -ru genieacs /usr/lib/node_modules/
+    rm -r /usr/lib/node_modules/genieacs/public/app.css /usr/lib/node_modules/genieacs/public/logo.svg
+    mv /usr/lib/node_modules/genieacs/public/app-ori.css /usr/lib/node_modules/genieacs/public/app.css
+    mv /usr/lib/node_modules/genieacs/public/logo-ori.svg /usr/lib/node_modules/genieacs/public/logo.svg
 
-# Restor Database GenieACS
-mongorestore --db genieacs --drop database
+else
+    # Repelace folder GenieACS
+    cp -ru genieacs /usr/lib/node_modules/
+
+    rm -r /usr/lib/node_modules/genieacs/public/app-ori.css /usr/lib/node_modules/genieacs/public/logo-ori.svg
+
+    # Restor Database GenieACS
+    mongorestore --db genieacs --drop database
+fi
+
 
 # Keluar 1 Folder
 cd ..
