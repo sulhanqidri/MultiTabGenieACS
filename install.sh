@@ -7,20 +7,6 @@ echo -e "${GREEN}===============================================================
 echo -e "${GREEN}==================== Script Install  MultiTab GenieACS. ====================${NC}"
 echo -e "${GREEN}===================== By LSTNetwork. Info 085322692888 =====================${NC}"
 echo -e "${GREEN}============================================================================${NC}"
-
-# Install git
-apt install git -y
-
-# Cek apakah folder sudah ada
-if [ -d "MultiTabGenieACS" ]; then
-    echo -e "${GREEN}Skip Clone...${NC}"
-else
-    git clone https://github.com/sulhanqidri/MultiTabGenieACS
-fi
-
-# Masuk folder
-cd MultiTabGenieACS || { echo -e "${RED}Gagal masuk folder MultiTabGenieACS. Pastikan folder ada.${NC}"; exit 1; }
-
 echo -e "${GREEN}Multi tab full parameter? (y/n)${NC}"
 read installtabfull
 if [ "$installtabfull" != "y" ]; then
