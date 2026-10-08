@@ -1,0 +1,10 @@
+{
+  "weight": 30,
+  "precondition": "{\"_tags\":{\"$in\":[\"sqlradius-model-eg8145x6-10\"]}}",
+  "configurations": [
+    {
+      "type": "provision",
+      "name": "sqlradius-eg8145x6-10-health"
+    }
+  ]
+}
