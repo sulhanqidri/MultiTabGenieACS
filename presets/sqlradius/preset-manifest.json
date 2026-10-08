@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "name": "sqlradius-baseline",
+  "presets": [
+    "sqlradius-01-managed-tag",
+    "sqlradius-10-periodic-inform",
+    "sqlradius-20-inventory"
+  ],
+  "provisions": [
+    "sqlradius_tag_managed",
+    "sqlradius_periodic_inform",
+    "sqlradius_inventory"
+  ],
+  "policy": {
+    "vendor_specific_configuration": false,
+    "wan_configuration": false,
+    "wifi_configuration": false,
+    "firmware_upgrade": false,
+    "reboot": false,
+    "factory_reset": false
+  }
+}
