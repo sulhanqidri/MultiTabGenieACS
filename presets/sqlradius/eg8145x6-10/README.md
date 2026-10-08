@@ -1,24 +1,44 @@
-# EG8145X6-10 — SQLRadius Discovery Preset
+# Huawei EG8145X6-10 — SQLRadius Preset
 
-Target device:
+## Verified model
 
-    00259E-EG8145X6-10-48575443C31563B1
+- Manufacturer: Huawei Technologies Co., Ltd
+- OUI: 00259E
+- Product Class / Model: EG8145X6-10
+- Hardware: 343D.A
+- Firmware: V5R023C00S247
 
-The URL/log representation may display the hyphen in the device ID as %2D. The preset uses the decoded device ID.
+## Verified WAN layout
 
-## Purpose
+Management / TR-069:
+- WANDevice.1.WANConnectionDevice.1.WANIPConnection.1
+- Service TR069
+- VLAN 100
+- IP_Routed
+- NAT false
 
-This is the first integration-stage preset and is intentionally read-only.
+Internet:
+- WANDevice.1.WANConnectionDevice.2.WANPPPConnection.1
+- Service INTERNET
+- VLAN 200
+- IP_Routed
+- NAT true
+- Connected
 
-It collects identity, device information, TR-069 management information, and WAN/LAN object instances.
+Other bridge:
+- WANDevice.1.WANConnectionDevice.3.WANIPConnection.1
+- Service OTHER
+- VLAN 0
+- IP_Bridged
 
-It does NOT change Periodic Inform, Connection Request credentials, WAN/PPPoE, VLAN, Wi-Fi, firmware, reboot, or factory-reset state.
+## Preset strategy
 
-## Files
+1. 10-sqlradius-model-baseline.preset.json identifies EG8145X6-10 CPEs.
+2. sqlradius-eg8145x6-10-baseline.js refreshes inventory and adds only a model classification tag.
+3. 20-sqlradius-internet-pppoe.provision.js is a dynamic provisioning template and is NOT attached to an automatic preset.
 
-- sqlradius-test-eg8145x6-discovery.js — Provision script
-- sqlradius-test-eg8145x6-discovery.preset.json — exact-device preset
+The dynamic template expects args.username, args.password, and args.vlan.
 
-## Next step
+It locates the existing INTERNET PPPoE connection by X_HW_SERVICELIST=INTERNET instead of assuming WANConnectionDevice.2.
 
-After the device model is visible, inspect the actual WAN path before creating any PPPoE/VLAN preset.
+Changing Username, Password, or VLAN on the active Internet WAN can interrupt the customer session. SQLRadius should invoke this only as an explicit provisioning action.
