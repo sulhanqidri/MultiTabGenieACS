@@ -1,20 +1,18 @@
 {
-  "version": 1,
-  "name": "sqlradius-baseline",
+  "version": 2,
+  "name": "sqlradius-eg8145x6-test",
+  "target": "00259E-EG8145X6-10-48575443C31563B1",
   "presets": [
-    "sqlradius-01-managed-tag",
-    "sqlradius-10-periodic-inform",
-    "sqlradius-20-inventory"
+    "sqlradius-test-01-eg8145x6-10"
   ],
   "provisions": [
-    "sqlradius_tag_managed",
-    "sqlradius_periodic_inform",
-    "sqlradius_inventory"
+    "sqlradius_test_eg8145x6"
   ],
   "policy": {
-    "vendor_specific_configuration": false,
+    "test_scope": "single_device",
     "wan_configuration": false,
     "wifi_configuration": false,
+    "vlan_configuration": false,
     "firmware_upgrade": false,
     "reboot": false,
     "factory_reset": false
