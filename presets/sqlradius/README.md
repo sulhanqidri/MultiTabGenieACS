@@ -1,52 +1,55 @@
-# GenieACS SQLRadius Preset Baseline
+# GenieACS SQLRadius Preset — EG8145X6-10 Test
 
-This directory contains a vendor-neutral GenieACS baseline for later SQLRadius integration.
+This is a **strict single-device test preset** for:
 
-## Scope
+    00259E-EG8145X6-10-48575443C31563B1
 
-- Tag managed CPEs with `sqlradius-managed`
-- Keep Periodic Inform enabled at 300 seconds where the CPE exposes the standard TR-069 parameter
-- Refresh identity/inventory data without forcing a full data-model discovery on every inform
-- Keep vendor/ONT-specific configuration out of the baseline
+It is intentionally not a production-wide preset.
 
-## Why this is intentionally conservative
+## What it does
 
-GenieACS presets/provisions should be idempotent and should converge to a stable state. Vendor-specific parameters are not applied until a real CPE data model has been inspected.
+- Adds `sqlradius-test`
+- Adds `sqlradius-managed`
+- Reads the device identity
+- Reads the Huawei legacy `InternetGatewayDevice` management-server parameters
+- Enables Periodic Inform if exposed
+- Sets Periodic Inform Interval to 300 seconds if exposed
+- Logs firmware, hardware and provisioning-code values if exposed
 
-The baseline does not change WAN/PPPoE, Wi-Fi SSID/password, VLAN, firmware, reboot, or factory-reset state.
+## What it does NOT do
+
+- No WAN/PPPoE configuration
+- No VLAN change
+- No Wi-Fi SSID/password change
+- No firmware upgrade
+- No reboot
+- No factory reset
+
+The device model is Huawei EG8145X6-10 and examples for this model use the legacy `InternetGatewayDevice` data model. GenieACS supports matching a preset by a MongoDB-style precondition and running a Provision script for the matching CPE. citeturn969052search0turn179860search0
 
 ## Install
 
-Run:
-
     cd presets/sqlradius
     chmod +x install.sh
-    sudo ./install.sh
+    NBI_URL=http://127.0.0.1:7557 ./install.sh
 
-By default the script targets:
+The target can be overridden without editing the script:
 
-    http://127.0.0.1:7557
+    TEST_DEVICE_ID='00259E-EG8145X6-10-48575443C31563B1' \
+    NBI_URL=http://127.0.0.1:7557 ./install.sh
 
-Override with:
+## Verify preset
 
-    NBI_URL=http://127.0.0.1:7557 sudo ./install.sh
+    curl -sS 'http://127.0.0.1:7557/presets/sqlradius-test-01-eg8145x6-10'
 
-After installation verify:
+## Verify device
 
-    curl -sS "$NBI_URL/presets/"
-    curl -sS "$NBI_URL/provisions/"
+Use the exact ID as a query parameter. Be careful with URL encoding because GenieACS device IDs can contain characters that require encoding. citeturn969052search0
 
-## SQLRadius integration contract
+    curl -sS --get 'http://127.0.0.1:7557/devices/' \
+      --data-urlencode 'query={"_id":"00259E-EG8145X6-10-48575443C31563B1"}' \
+      --data-urlencode 'projection=_id,_tags,DeviceID,InternetGatewayDevice.ManagementServer,InternetGatewayDevice.DeviceInfo'
 
-SQLRadius will later use GenieACS NBI as the device-management source:
+## Next phase
 
-- Device identity: `DeviceID.ID`, `DeviceID.SerialNumber`, `DeviceID.ProductClass`, `DeviceID.OUI`, `DeviceID.Manufacturer`
-- Managed scope: tag `sqlradius-managed`
-- Device control: GenieACS NBI tasks
-- Tenant association: owned by SQLRadius, not encoded into vendor-specific CPE parameters
-
-Tenant tags can be added later using a controlled naming scheme such as:
-
-    tenant:<tenant-id>
-
-Do not expose the NBI port publicly without an authentication and network-access control layer.
+After this exact device is stable, we will create the reusable Huawei/EG8145X6-10 model preset and then connect SQLRadius tenant/customer data to the GenieACS NBI.
