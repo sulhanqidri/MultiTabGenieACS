@@ -22,88 +22,65 @@ put_preset() {
     --data-binary "$json" >/dev/null
 }
 
-put_provision "sqlradius_tag_managed" '
-declare("Tags.sqlradius-managed", null, {value: true});
-'
+# Test-only scope. This preset matches exactly one CPE.
+TEST_DEVICE_ID="${TEST_DEVICE_ID:-00259E-EG8145X6-10-48575443C31563B1}"
 
-put_provision "sqlradius_periodic_inform" '
+put_provision "sqlradius_test_eg8145x6" '
 const now = Date.now();
-const enableValue = true;
-const intervalValue = 300;
 
-let deviceEnable = declare("Device.ManagementServer.PeriodicInformEnable", {value: now});
-if (deviceEnable.size) {
-  declare("Device.ManagementServer.PeriodicInformEnable", null, {value: enableValue});
-  let deviceInterval = declare("Device.ManagementServer.PeriodicInformInterval", {value: now});
-  if (deviceInterval.size) {
-    declare("Device.ManagementServer.PeriodicInformInterval", null, {value: intervalValue});
-  }
+declare("Tags.sqlradius-test", null, {value: true});
+declare("Tags.sqlradius-managed", null, {value: true});
+
+let serial = declare("DeviceID.SerialNumber", {value: now});
+let model = declare("DeviceID.ProductClass", {value: now});
+let manufacturer = declare("DeviceID.Manufacturer", {value: now});
+let oui = declare("DeviceID.OUI", {value: now});
+
+log("SQLRadius test CPE: manufacturer=" + (manufacturer.size ? manufacturer.value[0] : "") +
+    " oui=" + (oui.size ? oui.value[0] : "") +
+    " productClass=" + (model.size ? model.value[0] : "") +
+    " serial=" + (serial.size ? serial.value[0] : ""));
+
+let piEnable = declare("InternetGatewayDevice.ManagementServer.PeriodicInformEnable", {value: now});
+if (piEnable.size) {
+  declare("InternetGatewayDevice.ManagementServer.PeriodicInformEnable", null, {value: true});
 }
 
-let igdEnable = declare("InternetGatewayDevice.ManagementServer.PeriodicInformEnable", {value: now});
-if (igdEnable.size) {
-  declare("InternetGatewayDevice.ManagementServer.PeriodicInformEnable", null, {value: enableValue});
-  let igdInterval = declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", {value: now});
-  if (igdInterval.size) {
-    declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", null, {value: intervalValue});
-  }
+let piInterval = declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", {value: now});
+if (piInterval.size) {
+  declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", null, {value: 300});
+}
+
+let sw = declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", {value: now});
+if (sw.size) {
+  log("SQLRadius test CPE software=" + sw.value[0]);
+}
+
+let hw = declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", {value: now});
+if (hw.size) {
+  log("SQLRadius test CPE hardware=" + hw.value[0]);
+}
+
+let provCode = declare("InternetGatewayDevice.DeviceInfo.ProvisioningCode", {value: now});
+if (provCode.size) {
+  log("SQLRadius test CPE provisioningCode=" + provCode.value[0]);
 }
 '
 
-put_provision "sqlradius_inventory" '
-const refresh = Date.now() - (24 * 60 * 60 * 1000);
-
-declare("DeviceID.Manufacturer", {value: refresh});
-declare("DeviceID.OUI", {value: refresh});
-declare("DeviceID.ProductClass", {value: refresh});
-declare("DeviceID.SerialNumber", {value: refresh});
-
-declare("Device.DeviceInfo.Manufacturer", {value: refresh});
-declare("Device.DeviceInfo.HardwareVersion", {value: refresh});
-declare("Device.DeviceInfo.ProductClass", {value: refresh});
-declare("Device.DeviceInfo.SerialNumber", {value: refresh});
-declare("Device.DeviceInfo.SoftwareVersion", {value: refresh});
-
-declare("InternetGatewayDevice.DeviceInfo.Manufacturer", {value: refresh});
-declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", {value: refresh});
-declare("InternetGatewayDevice.DeviceInfo.ProductClass", {value: refresh});
-declare("InternetGatewayDevice.DeviceInfo.SerialNumber", {value: refresh});
-declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", {value: refresh});
-'
-
-put_preset "sqlradius-01-managed-tag" '{
-  "weight": 0,
-  "configurations": [
+put_preset "sqlradius-test-01-eg8145x6-10" "{
+  \"weight\": 0,
+  \"precondition\": \"{\\\"_id\\\": \\\"${TEST_DEVICE_ID}\\\"}\",
+  \"configurations\": [
     {
-      "type": "provision",
-      "name": "sqlradius_tag_managed"
+      \"type\": \"provision\",
+      \"name\": \"sqlradius_test_eg8145x6\"
     }
   ]
-}'
-
-put_preset "sqlradius-10-periodic-inform" '{
-  "weight": 10,
-  "precondition": "{\"_tags\": \"sqlradius-managed\"}",
-  "configurations": [
-    {
-      "type": "provision",
-      "name": "sqlradius_periodic_inform"
-    }
-  ]
-}'
-
-put_preset "sqlradius-20-inventory" '{
-  "weight": 20,
-  "precondition": "{\"_tags\": \"sqlradius-managed\"}",
-  "configurations": [
-    {
-      "type": "provision",
-      "name": "sqlradius_inventory"
-    }
-  ]
-}'
+}"
 
 echo
-echo "GenieACS SQLRadius preset baseline installed."
+echo "GenieACS SQLRadius test preset installed."
 echo "NBI: ${NBI_URL}"
-echo "Next: register one real ONT, inspect its data model, then add vendor/model-specific presets."
+echo "Target device: ${TEST_DEVICE_ID}"
+echo
+echo "No WAN/PPPoE, Wi-Fi, VLAN, firmware, reboot, or factory-reset changes are performed."
