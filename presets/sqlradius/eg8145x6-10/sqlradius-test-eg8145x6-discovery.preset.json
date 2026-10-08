@@ -1,0 +1,10 @@
+{
+  "weight": 0,
+  "precondition": "{\"_id\":\"00259E-EG8145X6-10-48575443C31563B1\"}",
+  "configurations": [
+    {
+      "type": "provision",
+      "name": "sqlradius-test-eg8145x6-discovery"
+    }
+  ]
+}
